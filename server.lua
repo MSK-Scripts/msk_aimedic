@@ -64,7 +64,7 @@ GithubUpdater = function()
     end
     
     local CurrentVersion = GetCurrentVersion()
-    local resourceName = "^4["..GetCurrentResourceName().."]^0"
+    local resourceName = "[^2"..GetCurrentResourceName().."^0]"
 
     if Config.VersionChecker then
         PerformHttpRequest('https://raw.githubusercontent.com/MSK-Scripts/msk_aimedic/main/VERSION', function(Error, NewestVersion, Header)
