@@ -2,7 +2,7 @@
 [ESX] AI Medic NPC
 
 ## Description
-* When you are dead you can press the hotkey
+* When you are dead and no Medic is Online then you can press the hotkey
 * An NPC will then come to you with a vehicle and try to revive you
 * You can set a chance whether the NPC manages to revive you or not
 * You can set whether the NPC tries again after a failed attempt or leaves afterwards.
