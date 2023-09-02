@@ -1,4 +1,4 @@
-local isDead, OnlineMedics, medicCalled, medicOnRoad, triedToRevive = false, 0, false, false, false
+local isDead, OnlineMedics, medicCalled, medicOnRoad, triedToRevive = false, 5, false, false, false
 local taskVehicle, taskNPC, taskBlip = nil, nil, nil
 
 AddEventHandler('esx:onPlayerDeath', function(data) 

@@ -1,8 +1,8 @@
-local OnlineMedics = 0
-
-AddEventHandler('onResourceStart', function(resource)
-    if resource == GetCurrentResourceName() then
-        local xPlayers = ESX.GetExtendedPlayers()
+CreateThread(function()
+	while true do
+		local sleep = 10000
+        local OnlineMedics = 0
+		local xPlayers = ESX.GetExtendedPlayers()
 
         for k, xPlayer in pairs(xPlayers) do
             if isMedic(xPlayer.job.name) then
@@ -11,42 +11,24 @@ AddEventHandler('onResourceStart', function(resource)
         end
 
         TriggerClientEvent('msk_aimedic:refreshMedics', -1, OnlineMedics)
-    end
+
+		Wait(sleep)
+	end
 end)
 
-RegisterNetEvent('esx:playerLoaded')
-AddEventHandler('esx:playerLoaded', function(source, xPlayer, isNew)
+
+ESX.RegisterServerCallback('msk_aimedic:getOnlineMedics', function(source, cb)
     local src = source
+    local OnlineMedics = 0
+    local xPlayers = ESX.GetExtendedPlayers()
 
-    if isMedic(xPlayer.job.name) then
-        OnlineMedics = OnlineMedics + 1
+    for k, xPlayer in pairs(xPlayers) do
+        if isMedic(xPlayer.job.name) then
+            OnlineMedics = OnlineMedics + 1
+        end
     end
 
-    TriggerClientEvent('msk_aimedic:refreshMedics', -1, OnlineMedics)
-end)
-
-RegisterNetEvent('esx:playerLogout')
-AddEventHandler('esx:playerLogout', function(source)
-    local src = source
-    local xPlayer = ESX.GetPlayerFromId(src)
-
-    if isMedic(xPlayer.job.name) then
-        OnlineMedics = OnlineMedics - 1
-    end
-
-    TriggerClientEvent('msk_aimedic:refreshMedics', -1, OnlineMedics)
-end)
-
-RegisterNetEvent('esx:playerDropped')
-AddEventHandler('esx:playerDropped', function(playerId, reason)
-	local src = playerId
-	local xPlayer = ESX.GetPlayerFromId(src)
-
-	if isMedic(xPlayer.job.name) then
-        OnlineMedics = OnlineMedics - 1
-    end
-
-    TriggerClientEvent('msk_aimedic:refreshMedics', -1, OnlineMedics)
+   cb(OnlineMedics)
 end)
 
 isMedic = function(playerJob)
