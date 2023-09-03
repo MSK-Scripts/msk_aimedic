@@ -3,10 +3,17 @@ Config = {}
 Config.Locale = 'de'
 Config.VersionChecker = true
 ----------------------------------------------------------------
+-- Add the Webhook Link in server.lua
+Config.DiscordLog = true
+Config.botColor = "6205745" -- https://www.mathsisfun.com/hexadecimal-decimal-colors.html
+Config.botName = "MSK Scripts"
+Config.botAvatar = "https://i.imgur.com/PizJGsh.png"
+----------------------------------------------------------------
 Config.Hotkey = {key = 38, label = 'E'}
 Config.SpawnRadius = 150 -- default: 150 meters
 Config.DrivingStyle = 786475 -- default: 786475 // https://vespura.com/fivem/drivingstyle/
 ----------------------------------------------------------------
+Config.RevivePrice = 5000 -- Price to get revived
 Config.ReviveDuration = 10 -- in seconds // default: 10 seconds
 
 Config.ReviveChance = {

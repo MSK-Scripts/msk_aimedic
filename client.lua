@@ -1,4 +1,4 @@
-local isDead, OnlineMedics, medicCalled, medicOnRoad, triedToRevive = false, 5, false, false, false
+local isDead, OnlineMedics, medicCalled, medicOnRoad, triedToRevive, wasRevived = false, 5, false, false, false, false
 local taskVehicle, taskNPC, taskBlip = nil, nil, nil
 
 AddEventHandler('esx:onPlayerDeath', function(data) 
@@ -10,6 +10,12 @@ AddEventHandler('playerSpawned', function(spawn)
     isDead = false
     medicCalled = false
     medicOnRoad = false
+
+    if wasRevived then 
+        wasRevived = false
+        TriggerServerEvent('msk_aimedic:removeMoney') 
+    end
+
     leaveTarget()
 end)
 
@@ -22,11 +28,11 @@ CreateThread(function()
 	while true do
 		local sleep = 500
 
-		if isDead and OnlineMedics <= Config.Jobs.amount then
+		if isDead and OnlineMedics <= Config.Jobs.amount and hasEnoughMoney() then
 			sleep = 0
 
             if not medicCalled and not triedToRevive then
-                drawGenericText(Translation[Config.Locale]['input']:format(Config.Hotkey.label))
+                drawGenericText(Translation[Config.Locale]['input']:format(Config.Hotkey.label, comma(Config.RevivePrice)))
 
                 if IsControlJustPressed(0, Config.Hotkey.key) then
                     medicCalled = true
@@ -125,6 +131,7 @@ npcToPlayer = function(target, targetCoords, vehicle, vehicleCoords, npc)
             Wait(Config.ReviveDuration * 1000)
 
             if not Config.ReviveChance.enable then
+                wasRevived = true
                 Config.ReviveTrigger()
                 ClearPedTasks(npc)
                 advancedNotification(Translation[Config.Locale]['was_revived']:format(Config.Medic.npcName), 'Los Santos', 'Medical Department', 'CHAR_CALL911')
@@ -133,6 +140,7 @@ npcToPlayer = function(target, targetCoords, vehicle, vehicleCoords, npc)
                 local chance = math.random(100)
                 
                 if chance <= Config.ReviveChance.chance then
+                    wasRevived = true
                     Config.ReviveTrigger()
                     ClearPedTasks(npc)
                     advancedNotification(Translation[Config.Locale]['was_revived']:format(Config.Medic.npcName), 'Los Santos', 'Medical Department', 'CHAR_CALL911')
@@ -177,6 +185,13 @@ leaveTarget = function()
     taskNPC = nil
 end
 
+refreshOnlineMedics = function()
+    ESX.TriggerServerCallback('msk_aimedic:getOnlineMedics', function(medics)
+        OnlineMedics = medics
+    end)
+end
+refreshOnlineMedics()
+
 drawGenericText = function(text)
 	SetTextColour(186, 186, 186, 255)
 	SetTextFont(0)
@@ -199,4 +214,37 @@ advancedNotification = function(text, title, subtitle, icon, flash, icontype)
     AddTextComponentString(text)
     SetNotificationMessage(icon, icon, flash, icontype, title, subtitle)
 	DrawNotification(false, true)
+end
+
+hasEnoughMoney = function()
+    local cash = getAccount('money').money
+    local bank = getAccount('bank').money
+
+    return cash >= Config.RevivePrice or bank >= Config.RevivePrice
+end
+
+getAccount = function(account)
+    local player = ESX.GetPlayerData()
+
+    for k, v in pairs(player.accounts) do
+        if v.name == account then
+            return v
+        end
+    end
+    return false
+end
+
+comma = function(int, tag)
+    if not tag then tag = '.' end
+    local newInt = int
+
+    while true do  
+        newInt, k = string.gsub(newInt, "^(-?%d+)(%d%d%d)", '%1'..tag..'%2')
+
+        if (k == 0) then
+            break
+        end
+    end
+
+    return newInt
 end

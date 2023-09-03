@@ -1,3 +1,5 @@
+local webHookLink = "INSERT DISCORD WEBHOOK LINK HERE"
+
 CreateThread(function()
 	while true do
 		local sleep = 10000
@@ -16,6 +18,17 @@ CreateThread(function()
 	end
 end)
 
+RegisterServerEvent('msk_aimedic:removeMoney')
+AddEventHandler('msk_aimedic:removeMoney', function()
+    local src = source
+    local xPlayer = ESX.GetPlayerFromId(src)
+    local cash = xPlayer.getAccount('money').money
+    local account = 'money'
+
+    if cash < Config.RevivePrice then account = 'bank' end
+    xPlayer.removeAccountMoney(account, Config.RevivePrice)
+    sendDiscordLog(xPlayer)
+end)
 
 ESX.RegisterServerCallback('msk_aimedic:getOnlineMedics', function(source, cb)
     local src = source
@@ -38,6 +51,43 @@ isMedic = function(playerJob)
         end
     end
     return false
+end
+
+comma = function(int, tag)
+    if not tag then tag = '.' end
+    local newInt = int
+
+    while true do  
+        newInt, k = string.gsub(newInt, "^(-?%d+)(%d%d%d)", '%1'..tag..'%2')
+
+        if (k == 0) then
+            break
+        end
+    end
+
+    return newInt
+end
+
+sendDiscordLog = function(xPlayer)
+    if not Config.DiscordLog then return end
+
+    local content = {{
+        ["title"] = "MSK AI Medic",
+        ["description"] = Translation[Config.Locale]['discord_webhook']:format(xPlayer.name, xPlayer.source),
+        ["color"] = Config.botColor,
+        ["footer"] = {
+            ["text"] = "© MSK Scripts • " .. os.date("%d/%m/%Y %H:%M:%S"),
+            ["icon_url"] = Config.botAvatar
+        }
+    }}
+
+    PerformHttpRequest(webHookLink, function(err, text, headers) end, 'POST', json.encode({
+        username = Config.botName,
+        embeds = content,
+        avatar_url = Config.botAvatar
+    }), {
+        ['Content-Type'] = 'application/json'
+    })
 end
 
 GithubUpdater = function()
