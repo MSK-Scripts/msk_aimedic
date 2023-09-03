@@ -1,6 +1,8 @@
 # msk_aimedic
 [ESX] AI Medic NPC
 
+**[Forum Post](https://forum.cfx.re/t/esx-msk-ai-medic/5165289)**
+
 ## Description
 * When you are dead and no Medic is Online then you can press the hotkey
 * An NPC will then come to you with a vehicle and try to revive you
