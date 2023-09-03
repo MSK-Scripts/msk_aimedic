@@ -8,9 +8,13 @@
 * An NPC will then come to you with a vehicle and try to revive you
 * You can set a chance whether the NPC manages to revive you or not
 * You can set whether the NPC tries again after a failed attempt or leaves afterwards.
+* Fee for reviving
+* Discord Logs
 
 ## Requirements
 * [ESX Legacy](https://github.com/esx-framework/esx_core)
+* [esx_ambulancejob](https://github.com/esx-framework/esx_ambulancejob)
+* **visn_are** might work, but has not been tested, so it is possible that it does not work
 
 ## My other Scripts
 ### Paid
