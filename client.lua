@@ -6,7 +6,20 @@ AddEventHandler('esx:onPlayerDeath', function(data)
     triedToRevive = false
 end)
 
-AddEventHandler('playerSpawned', function(spawn) 
+AddEventHandler('esx:onPlayerSpawn', function() 
+    isDead = false
+    medicCalled = false
+    medicOnRoad = false
+
+    if wasRevived then 
+        wasRevived = false
+        TriggerServerEvent('msk_aimedic:removeMoney') 
+    end
+
+    leaveTarget()
+end)
+
+AddEventHandler('playerSpawned', function() 
     isDead = false
     medicCalled = false
     medicOnRoad = false
@@ -171,18 +184,19 @@ leaveTarget = function()
     medicCalled = false
     medicOnRoad = false
 
-	if taskBlip then RemoveBlip(taskBlip) end
-    if taskVehicle and taskNPC then
-        SetVehicleSiren(taskVehicle, false)
-        TaskVehicleDriveWander(taskNPC, taskVehicle, 17.0, Config.DrivingStyle)
-        Wait(10000)
-        SetPedAsNoLongerNeeded(taskNPC)
-        SetEntityAsNoLongerNeeded(taskVehicle)
-    end
-
+    local blip, vehicle, npc = taskBlip, taskVehicle, taskNPC
     taskBlip = nil
     taskVehicle = nil
     taskNPC = nil
+
+	if blip then RemoveBlip(blip) end
+    if vehicle and npc then
+        SetVehicleSiren(vehicle, false)
+        TaskVehicleDriveWander(npc, vehicle, 17.0, Config.DrivingStyle)
+        Wait(10000)
+        SetPedAsNoLongerNeeded(npc)
+        SetEntityAsNoLongerNeeded(vehicle)
+    end
 end
 
 refreshOnlineMedics = function()
