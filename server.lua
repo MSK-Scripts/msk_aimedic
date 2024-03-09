@@ -30,7 +30,7 @@ AddEventHandler('msk_aimedic:removeMoney', function()
     sendDiscordLog(xPlayer)
 end)
 
-ESX.Register('msk_aimedic:getOnlineMedics', function(source)
+ESX.RegisterServerCallback('msk_aimedic:getOnlineMedics', function(source, cb)
     local src = source
     local OnlineMedics = 0
     local xPlayers = ESX.GetExtendedPlayers()
@@ -41,7 +41,7 @@ ESX.Register('msk_aimedic:getOnlineMedics', function(source)
         end
     end
 
-   return OnlineMedics
+   cb(OnlineMedics)
 end)
 
 isMedic = function(playerJob)
