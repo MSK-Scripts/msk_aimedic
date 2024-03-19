@@ -110,9 +110,7 @@ GithubUpdater = function()
             print("###############################")
         end)
     else
-        print("###############################")
-        print(resourceName .. '^2 ✓ Resource loaded^0')
-        print("###############################")
+        print(resourceName .. '^2 ✓ Resource loaded ^0')
     end
 end
 GithubUpdater()

@@ -24,6 +24,8 @@ Config.ReviveChance = {
     howOften = 3, -- If NPC failed to revive the player then he tries up to 3 times more
 }
 ----------------------------------------------------------------
+Config.VisnAre = GetResourceState("visn_are") ~= "missing"
+----------------------------------------------------------------
 Config.Jobs = {
     amount = 0, 
     jobs = {
@@ -42,6 +44,9 @@ Config.ProgressBar = function()
 end
 
 Config.ReviveTrigger = function()
-    TriggerEvent('esx_ambulancejob:revive')
-    -- TriggerEvent('visn_are:resetHealthBuffer')
+    if Config.VisnAre then
+        TriggerEvent('visn_are:resetHealthBuffer')
+    else
+        TriggerEvent('esx_ambulancejob:revive')
+    end
 end

@@ -13,8 +13,8 @@
 
 ## Requirements
 * [ESX Legacy](https://github.com/esx-framework/esx_core)
-* [esx_ambulancejob](https://github.com/esx-framework/esx_ambulancejob)
-* **visn_are** might work, but has not been tested, so it is possible that it does not work
+* [esx_ambulancejob](https://github.com/esx-framework/esx_ambulancejob) - *(not needed if you use visn_are)*
+* [visn_are](https://store.veryinsanee.space/package/5215195) - *(This is optional)*
 
 ## My other Scripts
 ### Paid
