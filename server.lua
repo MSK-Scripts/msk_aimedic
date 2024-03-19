@@ -27,6 +27,14 @@ AddEventHandler('msk_aimedic:removeMoney', function()
 
     if cash < Config.RevivePrice then account = 'bank' end
     xPlayer.removeAccountMoney(account, Config.RevivePrice)
+
+    if Config.Society.enable then
+        TriggerEvent('esx_addonaccount:getSharedAccount', Config.Society.account, function(account)
+            if not account then return print(('^1Society %s not found on Event ^2 msk_aimedic:removeMoney ^0'):format(Config.Society.account)) end
+            account.addMoney(Config.RevivePrice)
+        end)
+    end
+
     sendDiscordLog(xPlayer)
 end)
 

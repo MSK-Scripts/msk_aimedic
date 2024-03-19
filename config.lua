@@ -23,6 +23,12 @@ Config.ReviveChance = {
     tryagain = false, -- Set to true if the NPC should try it again if he failed
     howOften = 3, -- If NPC failed to revive the player then he tries up to 3 times more
 }
+
+-- You will need esx_addonaccount for that!
+Config.Society = {
+    enable = true, -- Set false if you don't want that the Config.RevivePrice will be added to a society account
+    account = 'society_ambulance'
+}
 ----------------------------------------------------------------
 Config.VisnAre = GetResourceState("visn_are") ~= "missing"
 ----------------------------------------------------------------
@@ -30,6 +36,7 @@ Config.Jobs = {
     amount = 0, 
     jobs = {
         'ambulance',
+        'fire_department',
     }
 }
 ----------------------------------------------------------------
