@@ -14,6 +14,7 @@
 
 ## Requirements
 * [ESX Legacy](https://github.com/esx-framework/esx_core)
+* [esx_addonaccount](https://github.com/esx-framework/esx_addonaccount) - *(This is optional)*
 * [esx_ambulancejob](https://github.com/esx-framework/esx_ambulancejob) - *(not needed if you use visn_are)*
 * [visn_are](https://store.veryinsanee.space/package/5215195) - *(This is optional)*
 
