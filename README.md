@@ -10,6 +10,7 @@
 * You can set whether the NPC tries again after a failed attempt or leaves afterwards.
 * Fee for reviving
 * Discord Logs
+* Support for visn_are
 
 ## Requirements
 * [ESX Legacy](https://github.com/esx-framework/esx_core)
