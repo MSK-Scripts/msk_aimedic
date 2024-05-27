@@ -11,12 +11,20 @@
 * Fee for reviving
 * Discord Logs
 * Support for visn_are
+* Support for osp_ambulance
+
+## Important
+* Please remove the dependencies that you **don't** use in `fxmanifest.lua`!
 
 ## Requirements
 * [ESX Legacy](https://github.com/esx-framework/esx_core)
 * [esx_addonaccount](https://github.com/esx-framework/esx_addonaccount) - *(This is optional)*
-* [esx_ambulancejob](https://github.com/esx-framework/esx_ambulancejob) - *(not needed if you use visn_are)*
+
+## Optional Requirements
+You'll need one of the Scripts below
+* [esx_ambulancejob](https://github.com/esx-framework/esx_ambulancejob) - *(not needed if you use visn_are or osp_ambulance)*
 * [visn_are](https://store.veryinsanee.space/package/5215195) - *(This is optional)*
+* [osp_ambulance](https://osp-development.tebex.io/package/6010694) - *(This is optional)*
 
 ## My other Scripts
 ### Paid

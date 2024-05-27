@@ -1,47 +1,12 @@
 local isDead, OnlineMedics, medicCalled, medicOnRoad, triedToRevive, wasRevived = false, 5, false, false, false, false
 local taskVehicle, taskNPC, taskBlip = nil, nil, nil
 
-if Config.VisnAre then
-    local visn_f = exports["visn_are"]:GetSharedFunctions()
+AddEventHandler('esx:onPlayerDeath', function(data) 
+    isDead = true
+    triedToRevive = false
+end)
 
-    visn_f.HookEventHandler('OnUnconsciousStateChanged', function(newState)
-        if newState then -- Player is Dead
-            isDead = true
-            triedToRevive = false
-        else -- Player was revived
-            isDead = false
-            medicCalled = false
-            medicOnRoad = false
-        
-            if wasRevived then 
-                wasRevived = false
-                TriggerServerEvent('msk_aimedic:removeMoney') 
-            end
-        
-            leaveTarget()
-        end
-    end)
-else
-    AddEventHandler('esx:onPlayerDeath', function(data) 
-        isDead = true
-        triedToRevive = false
-    end)
-    
-    AddEventHandler('esx:onPlayerSpawn', function() 
-        isDead = false
-        medicCalled = false
-        medicOnRoad = false
-    
-        if wasRevived then 
-            wasRevived = false
-            TriggerServerEvent('msk_aimedic:removeMoney') 
-        end
-    
-        leaveTarget()
-    end)
-end
-
---[[ AddEventHandler('playerSpawned', function() 
+--[[ AddEventHandler('esx:onPlayerSpawn', function() 
     isDead = false
     medicCalled = false
     medicOnRoad = false
@@ -53,6 +18,19 @@ end
 
     leaveTarget()
 end) ]]
+
+AddEventHandler('playerSpawned', function() 
+    isDead = false
+    medicCalled = false
+    medicOnRoad = false
+
+    if wasRevived then 
+        wasRevived = false
+        TriggerServerEvent('msk_aimedic:removeMoney') 
+    end
+
+    leaveTarget()
+end)
 
 RegisterNetEvent('msk_aimedic:refreshMedics')
 AddEventHandler('msk_aimedic:refreshMedics', function(medics)

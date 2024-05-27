@@ -31,6 +31,7 @@ Config.Society = {
 }
 ----------------------------------------------------------------
 Config.VisnAre = GetResourceState("visn_are") ~= "missing"
+Config.OSPAmbulance = GetResourceState("osp_ambulance") ~= "missing"
 ----------------------------------------------------------------
 Config.Jobs = {
     amount = 0, 
@@ -47,12 +48,14 @@ Config.Medic = {
 }
 ----------------------------------------------------------------
 Config.ProgressBar = function()
-    exports.msk_core:ProgressStart(10000, 'Du wirst nun wiederbelebt...')
+    exports.msk_core:ProgressStart(Config.ReviveDuration * 1000, 'Du wirst nun wiederbelebt...')
 end
 
 Config.ReviveTrigger = function()
     if Config.VisnAre then
         TriggerEvent('visn_are:resetHealthBuffer')
+    elseif Config.OSPAmbulance then
+        TriggerEvent('hospital:client:Revive')
     else
         TriggerEvent('esx_ambulancejob:revive')
     end
