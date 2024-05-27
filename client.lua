@@ -1,12 +1,13 @@
 local isDead, OnlineMedics, medicCalled, medicOnRoad, triedToRevive, wasRevived = false, 5, false, false, false, false
 local taskVehicle, taskNPC, taskBlip = nil, nil, nil
+local isControlPressed = (Config.VisnAre or Config.OSPAmbulance) and IsDisabledControlPressed or IsControlJustPressed
 
 AddEventHandler('esx:onPlayerDeath', function(data) 
     isDead = true
     triedToRevive = false
 end)
 
---[[ AddEventHandler('esx:onPlayerSpawn', function() 
+playerRevived = function()
     isDead = false
     medicCalled = false
     medicOnRoad = false
@@ -17,20 +18,7 @@ end)
     end
 
     leaveTarget()
-end) ]]
-
-AddEventHandler('playerSpawned', function() 
-    isDead = false
-    medicCalled = false
-    medicOnRoad = false
-
-    if wasRevived then 
-        wasRevived = false
-        TriggerServerEvent('msk_aimedic:removeMoney') 
-    end
-
-    leaveTarget()
-end)
+end
 
 RegisterNetEvent('msk_aimedic:refreshMedics')
 AddEventHandler('msk_aimedic:refreshMedics', function(medics)
@@ -47,7 +35,7 @@ CreateThread(function()
             if not medicCalled and not triedToRevive then
                 drawGenericText(Translation[Config.Locale]['input']:format(Config.Hotkey.label, comma(Config.RevivePrice)))
 
-                if IsControlJustPressed(0, Config.Hotkey.key) then
+                if isControlPressed(0, Config.Hotkey.key) then
                     medicCalled = true
                     advancedNotification(Translation[Config.Locale]['medic_send']:format(Config.Medic.npcName), 'Los Santos', 'Medical Department', 'CHAR_CALL911')
                     startAIMedic()

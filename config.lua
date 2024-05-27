@@ -9,7 +9,7 @@ Config.botColor = "6205745" -- https://www.mathsisfun.com/hexadecimal-decimal-co
 Config.botName = "MSK Scripts"
 Config.botAvatar = "https://i.imgur.com/PizJGsh.png"
 ----------------------------------------------------------------
-Config.Hotkey = {key = 38, label = 'E'}
+Config.Hotkey = {key = 38, label = 'E'} -- G = 47
 Config.SpawnRadius = 150 -- default: 150 meters
 Config.DrivingStyle = 786475 -- default: 786475 // https://vespura.com/fivem/drivingstyle/
 ----------------------------------------------------------------
@@ -59,4 +59,6 @@ Config.ReviveTrigger = function()
     else
         TriggerEvent('esx_ambulancejob:revive')
     end
+
+    playerRevived() -- Do NOT delete this!
 end
