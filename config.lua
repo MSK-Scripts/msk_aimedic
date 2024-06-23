@@ -48,7 +48,7 @@ Config.Medic = {
 }
 ----------------------------------------------------------------
 Config.ProgressBar = function()
-    exports.msk_core:ProgressStart(Config.ReviveDuration * 1000, 'Du wirst nun wiederbelebt...')
+    exports.msk_core:Progressbar(Config.ReviveDuration * 1000, 'Du wirst nun wiederbelebt...')
 end
 
 Config.ReviveTrigger = function()
@@ -59,6 +59,4 @@ Config.ReviveTrigger = function()
     else
         TriggerEvent('esx_ambulancejob:revive')
     end
-
-    playerRevived() -- Do NOT delete this!
 end

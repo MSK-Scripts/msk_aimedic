@@ -1,13 +1,20 @@
 local isDead, OnlineMedics, medicCalled, medicOnRoad, triedToRevive, wasRevived = false, 5, false, false, false, false
 local taskVehicle, taskNPC, taskBlip = nil, nil, nil
 local isControlPressed = (Config.VisnAre or Config.OSPAmbulance) and IsDisabledControlPressed or IsControlJustPressed
+local canRevive = true
+
+toggleCanRevive = function(toggle)
+    canRevive = toggle
+end
+exports('toggleCanRevive', toggleCanRevive)
+RegisterNetEvent('msk_aimedic:canRevive', toggleCanRevive)
 
 AddEventHandler('esx:onPlayerDeath', function(data) 
     isDead = true
     triedToRevive = false
 end)
 
-playerRevived = function()
+AddEventHandler('playerSpawned', function()
     isDead = false
     medicCalled = false
     medicOnRoad = false
@@ -18,10 +25,9 @@ playerRevived = function()
     end
 
     leaveTarget()
-end
+end)
 
-RegisterNetEvent('msk_aimedic:refreshMedics')
-AddEventHandler('msk_aimedic:refreshMedics', function(medics)
+RegisterNetEvent('msk_aimedic:refreshMedics', function(medics)
     OnlineMedics = medics
 end)
 
@@ -32,7 +38,7 @@ CreateThread(function()
 		if isDead and OnlineMedics <= Config.Jobs.amount and hasEnoughMoney() then
 			sleep = 0
 
-            if not medicCalled and not triedToRevive then
+            if not medicCalled and not triedToRevive and canRevive then
                 drawGenericText(Translation[Config.Locale]['input']:format(Config.Hotkey.label, comma(Config.RevivePrice)))
 
                 if isControlPressed(0, Config.Hotkey.key) then
@@ -49,15 +55,10 @@ end)
 
 startAIMedic = function()
     local driverhash = GetHashKey(Config.Medic.pedmodel)
-    RequestModel(driverhash)
     local vehhash = GetHashKey(Config.Medic.vehmodel)
-    RequestModel(vehhash)
 
-    while not HasModelLoaded(driverhash) or not HasModelLoaded(vehhash) do
-        RequestModel(driverhash)
-        RequestModel(vehhash)
-        Wait(0)
-    end
+    loadModel(driverhash)
+    loadModel(vehhash)
 
     local playerPed = PlayerPedId()
     local playerCoords = GetEntityCoords(playerPed)
@@ -122,10 +123,7 @@ npcToPlayer = function(target, targetCoords, vehicle, vehicleCoords, npc)
             TaskTurnPedToFaceCoord(npc, targetCoords, -1)
             Wait(1000)
 
-            RequestAnimDict("mini@cpr@char_a@cpr_str")
-            while not HasAnimDictLoaded("mini@cpr@char_a@cpr_str") do
-                Wait(100)
-            end
+            loadAnimDict("mini@cpr@char_a@cpr_str")
             TaskPlayAnim(npc, "mini@cpr@char_a@cpr_str", "cpr_pumpchest", 1.0, 1.0, -1, 9, 1.0, 0, 0, 0)
             Config.ProgressBar()
 
@@ -193,6 +191,26 @@ refreshOnlineMedics = function()
     end)
 end
 refreshOnlineMedics()
+
+loadAnimDict = function(dict)
+    if not HasAnimDictLoaded(dict) then
+        RequestAnimDict(dict)
+
+        while not HasAnimDictLoaded(dict) do
+            Wait(1)
+        end
+    end
+end
+
+loadModel = function(modelHash)
+    if not HasModelLoaded(modelHash) then
+        RequestModel(modelHash)
+    
+        while not HasModelLoaded(modelHash) do
+            Wait(1)
+        end
+    end
+end
 
 drawGenericText = function(text)
 	SetTextColour(186, 186, 186, 255)

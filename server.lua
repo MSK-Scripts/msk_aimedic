@@ -18,8 +18,7 @@ CreateThread(function()
 	end
 end)
 
-RegisterServerEvent('msk_aimedic:removeMoney')
-AddEventHandler('msk_aimedic:removeMoney', function()
+RegisterServerEvent('msk_aimedic:removeMoney', function()
     local src = source
     local xPlayer = ESX.GetPlayerFromId(src)
     local cash = xPlayer.getAccount('money').money
@@ -99,7 +98,7 @@ sendDiscordLog = function(xPlayer)
 end
 
 GithubUpdater = function()
-    GetCurrentVersion = function()
+    local GetCurrentVersion = function()
 	    return GetResourceMetadata( GetCurrentResourceName(), "version" )
     end
     
@@ -108,17 +107,15 @@ GithubUpdater = function()
 
     if Config.VersionChecker then
         PerformHttpRequest('https://raw.githubusercontent.com/MSK-Scripts/msk_aimedic/main/VERSION', function(Error, NewestVersion, Header)
-            print("###############################")
             if CurrentVersion == NewestVersion then
                 print(resourceName .. '^2 ✓ Resource is Up to Date^0 - ^5Current Version: ^2' .. CurrentVersion .. '^0')
             elseif CurrentVersion ~= NewestVersion then
                 print(resourceName .. '^1 ✗ Resource Outdated. Please Update!^0 - ^5Current Version: ^1' .. CurrentVersion .. '^0')
                 print('^5Newest Version: ^2' .. NewestVersion .. '^0 - ^6Download here:^9 https://github.com/MSK-Scripts/msk_aimedic/releases/tag/v'.. NewestVersion .. '^0')
             end
-            print("###############################")
         end)
     else
-        print(resourceName .. '^2 ✓ Resource loaded ^0')
+        print(resourceName .. '^2 ✓ Resource loaded^0 - ^5Current Version: ^2' .. CurrentVersion .. '^0')
     end
 end
 GithubUpdater()
