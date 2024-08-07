@@ -63,7 +63,9 @@ startAIMedic = function()
     local playerPed = PlayerPedId()
     local playerCoords = GetEntityCoords(playerPed)
     spawnVehicle(playerCoords, driverhash, vehhash)
-    npcVehicleToPlayer(playerCoords, taskVehicle, taskNPC, vehhash, playerPed, playerCoords)
+
+    local _, closestRoad, closestRoad2 = GetClosestRoad(playerCoords.x, playerCoords.y, playerCoords.z , 0, 0, false)
+    npcVehicleToPlayer(closestRoad, taskVehicle, taskNPC, vehhash, playerPed, playerCoords)
 end
 
 spawnVehicle = function(coords, driverhash, vehhash)
@@ -78,6 +80,7 @@ spawnVehicle = function(coords, driverhash, vehhash)
         SetVehicleDoorsLockedForNonScriptPlayers(taskVehicle, true)
 
         taskNPC = CreatePedInsideVehicle(taskVehicle, 26, driverhash, -1, true, false)
+        SetBlockingOfNonTemporaryEvents(taskNPC, true)
 
         taskBlip = AddBlipForEntity(taskVehicle)
         SetBlipFlashes(taskBlip, true)
@@ -88,13 +91,13 @@ spawnVehicle = function(coords, driverhash, vehhash)
 end
 
 npcVehicleToPlayer = function(coords, vehicle, npc, vehhash, target, targetCoords)
-    TaskVehicleDriveToCoord(npc, vehicle, coords.x, coords.y, coords.z, 17.0, 0, vehhash, Config.DrivingStyle, 1, true)
+    TaskVehicleDriveToCoord(npc, vehicle, coords.x, coords.y, coords.z, 17.0, 0, vehhash, Config.DrivingStyle, 1.0, true)
     medicOnRoad = true
 
     while medicOnRoad do
         Wait(500)
         local vehicleCoords = GetEntityCoords(vehicle)
-        local distance = #(targetCoords - vehicleCoords)
+        local distance = #(coords - vehicleCoords)
 
         if distance < 20.0 then
             TaskVehicleTempAction(npc, vehicle, 27, 6000)
@@ -112,10 +115,10 @@ npcToPlayer = function(target, targetCoords, vehicle, vehicleCoords, npc)
         Wait(500)
         local distance = #(targetCoords - GetEntityCoords(npc))
         local npcStopRunning = false
-        TaskGoToCoordAnyMeans(npc, targetCoords, 2.0, 0, 0, 786603, 0xbf800000)
+        TaskGoToCoordAnyMeans(npc, targetCoords, 2.0, 0, false, 786475, 1.0)
 
         if distance <= 10.0 and not npcStopRunning then -- stops ai from sprinting when close
-            TaskGoToCoordAnyMeans(npc, targetCoords, 1.0, 0, 0, 786603, 0xbf800000)
+            TaskGoToCoordAnyMeans(npc, targetCoords, 1.0, 0, false, 786475, 1.0)
             npcStopRunning = true
         end
 
@@ -182,6 +185,8 @@ leaveTarget = function()
         Wait(10000)
         SetPedAsNoLongerNeeded(npc)
         SetEntityAsNoLongerNeeded(vehicle)
+        DeleteEntity(npc)
+        DeleteEntity(vehicle)
     end
 end
 
