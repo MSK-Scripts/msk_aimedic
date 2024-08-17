@@ -4,7 +4,7 @@ games { 'gta5' }
 author 'Musiker15 - MSK Scripts'
 name 'msk_aimedic'
 description 'AI Medic NPC'
-version '1.5.4'
+version '1.6.0'
 
 lua54 'yes'
 
