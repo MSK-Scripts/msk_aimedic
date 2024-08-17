@@ -13,8 +13,8 @@
 * Support for visn_are
 * Support for osp_ambulance
 
-## Important
-* Please remove the dependencies that you **don't** use in `fxmanifest.lua`!
+## Export
+* Call Medic: `exports.msk_aimedic:callAIMedic()`
 
 ## Requirements
 * [ESX Legacy](https://github.com/esx-framework/esx_core)
