@@ -10,7 +10,8 @@ Translation = {
         ['pay_fee'] = 'Du hast die Kosten von ~g~$%s~s~ bezahlt.',
         ['discord_webhook'] = 'Der Spieler **%s (ID: %s)** wurde vom AI Medics wiederbelebt.',
         ['abort'] = 'AI Mediziner abgebrochen',
-        ['input_abort'] = 'Drücke ~g~%s~s~ um den AI Medic zurück zu rufen.'
+        ['input_abort'] = 'Drücke ~g~%s~s~ um den AI Medic zurück zu rufen.',
+        ['no_money'] = 'Du konntest die Kosten für die Wiederbelebung nicht bezahlen.'
     },
     ['en'] = {
         ['input'] = 'Press ~g~%s~s~ to call the AI Medic. Price: ~g~$%s~s~',
@@ -21,6 +22,7 @@ Translation = {
         ['pay_fee'] = 'You paid the cost of ~g~$%s~s~.',
         ['discord_webhook'] = 'The player **%s (ID: %s)** was revived by AI Medics.',
         ['abort'] = 'AI Medic canceled',
-        ['input_abort'] = 'Press ~g~%s~s~ to abort the AI Medic.'
+        ['input_abort'] = 'Press ~g~%s~s~ to abort the AI Medic.',
+        ['no_money'] = 'You could not pay the cost for the revive.'
     },
 }

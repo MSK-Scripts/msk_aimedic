@@ -1,5 +1,5 @@
 # msk_aimedic
-[ESX] AI Medic NPC
+[ESX & QBCore] AI Medic NPC
 
 **[Forum Post](https://forum.cfx.re/t/esx-msk-ai-medic/5165289)**
 
@@ -8,8 +8,9 @@
 * An NPC will then come to you with a vehicle and try to revive you
 * You can set a chance whether the NPC manages to revive you or not
 * You can set whether the NPC tries again after a failed attempt or leaves afterwards.
-* Fee for reviving
+* Fee for reviving (server-side validated — no payment / revive exploits)
 * Discord Logs
+* Works with **ESX** and **QBCore** (auto-detected)
 * Support for visn_are
 * Support for osp_ambulance
 
@@ -17,12 +18,16 @@
 * Call Medic: `exports.msk_aimedic:callAIMedic()`
 
 ## Requirements
-* [ESX Legacy](https://github.com/esx-framework/esx_core)
-* [esx_addonaccount](https://github.com/esx-framework/esx_addonaccount) - *(This is optional)*
+* [msk_core](https://github.com/MSK-Scripts/msk_core) - **(mandatory)**
+* One framework: [ESX Legacy](https://github.com/esx-framework/esx_core) **or** [QBCore](https://github.com/qbcore-framework/qb-core)
 
 ## Optional Requirements
-You'll need one of the Scripts below
-* [esx_ambulancejob](https://github.com/esx-framework/esx_ambulancejob) - *(not needed if you use visn_are or osp_ambulance)*
+* Ambulance job (for the revive event) — **not needed if you use visn_are or osp_ambulance**
+  * ESX: [esx_ambulancejob](https://github.com/esx-framework/esx_ambulancejob)
+  * QBCore: [qb-ambulancejob](https://github.com/qbcore-framework/qb-ambulancejob)
+* Society account for the revive fee — *(optional, only if `Config.Society.enable = true`)*
+  * ESX: [esx_addonaccount](https://github.com/esx-framework/esx_addonaccount)
+  * QBCore: qb-banking or qb-management
 * [visn_are](https://store.veryinsanee.space/package/5215195) - *(This is optional)*
 * [osp_ambulance](https://osp-development.tebex.io/package/6010694) - *(This is optional)*
 

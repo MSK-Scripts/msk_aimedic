@@ -3,6 +3,11 @@ Config = {}
 Config.Locale = 'de'
 Config.VersionChecker = true
 ----------------------------------------------------------------
+-- Framework is auto-detected (ESX or QBCore). Only override if auto-detection fails.
+Config.Framework = (GetResourceState('es_extended') ~= 'missing' and 'ESX')
+    or (GetResourceState('qb-core') ~= 'missing' and 'QBCore')
+    or 'ESX'
+----------------------------------------------------------------
 -- Add the Webhook Link in server.lua
 Config.DiscordLog = true
 Config.botColor = "6205745" -- https://www.mathsisfun.com/hexadecimal-decimal-colors.html
@@ -34,14 +39,16 @@ Config.ReviveChance = {
     howOften = 3, -- If NPC failed to revive the player then he tries up to 3 times more
 }
 ----------------------------------------------------------------
--- You will need esx_addonaccount for that!
+-- ESX: requires esx_addonaccount. QBCore: requires qb-banking or qb-management.
 Config.Society = {
     enable = false, -- Set false if you don't want that the Config.RevivePrice will be added to a society account
-    account = 'society_ambulance'
+    -- Society name. A leading 'society_' prefix is stripped automatically,
+    -- so both 'ambulance' (QBCore style) and 'society_ambulance' (ESX style) work.
+    account = 'ambulance'
 }
 
 Config.Jobs = {
-    amount = 0, 
+    amount = 0,
     jobs = {
         'ambulance',
         'fire_department',
@@ -49,8 +56,8 @@ Config.Jobs = {
 }
 
 Config.Medic = {
-    name = 'Doc. Holiday', 
-    pedmodel = 's_m_m_doctor_01', 
+    name = 'Doc. Holiday',
+    pedmodel = 's_m_m_doctor_01',
     vehmodel = 'ambulance',
 }
 ----------------------------------------------------------------
@@ -59,19 +66,30 @@ Config.ProgressBar = function()
 end
 
 Config.ReviveTrigger = function()
+    -- Server-authoritative payment: the server validates funds, cooldown and the
+    -- online-medic count, removes the money and books the society BEFORE reviving.
+    local paid = MSK.Callback.TriggerCallback('msk_aimedic:payRevive')
+
+    if not paid then
+        exports.msk_core:AdvancedNotification(Translation[Config.Locale]['no_money'], 'Los Santos', 'Medical Department', 'CHAR_CALL911')
+        return false
+    end
+
     isDead = false
     medic.called = false
     medic.onRoad = false
     medic.finished = true
-    
+
     if Config.VisnAre then
         TriggerEvent('visn_are:resetHealthBuffer')
     elseif Config.OSPAmbulance then
         TriggerEvent('hospital:client:Revive')
+    elseif Config.Framework == 'QBCore' then
+        TriggerEvent('hospital:client:Revive') -- qb-ambulancejob
     else
-        TriggerEvent('esx_ambulancejob:revive')
+        TriggerEvent('esx_ambulancejob:revive') -- ESX default
     end
 
-    AdvancedNotification(Translation[Config.Locale]['was_revived']:format(Config.Medic.name), 'Los Santos', 'Medical Department', 'CHAR_CALL911')
-    TriggerServerEvent('msk_aimedic:removeMoney')
+    exports.msk_core:AdvancedNotification(Translation[Config.Locale]['was_revived']:format(Config.Medic.name), 'Los Santos', 'Medical Department', 'CHAR_CALL911')
+    return true
 end
