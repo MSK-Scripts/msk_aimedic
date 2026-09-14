@@ -1,3 +1,7 @@
+-- Notifications, TextUI and progress bars use the table forms of msk_core 4.1.0.
+-- An older msk_core shows broken notifications, so say it loudly on start.
+MSK.Check.Dependency('msk_core', '4.1.0', true)
+
 local webHookLink = "INSERT DISCORD WEBHOOK LINK HERE"
 
 ----------------------------------------------------------------

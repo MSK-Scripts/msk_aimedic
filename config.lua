@@ -62,7 +62,11 @@ Config.Medic = {
 }
 ----------------------------------------------------------------
 Config.ProgressBar = function()
-    exports.msk_core:Progressbar(Config.ReviveDuration * 1000, 'Du wirst nun wiederbelebt...')
+    -- The table form waits until the bar has run out. The caller already waits
+    -- Config.ReviveDuration on its own, so the bar runs in its own thread.
+    CreateThread(function()
+        exports.msk_core:Progressbar({ duration = Config.ReviveDuration * 1000, text = 'Du wirst nun wiederbelebt...' })
+    end)
 end
 
 Config.ReviveTrigger = function()
