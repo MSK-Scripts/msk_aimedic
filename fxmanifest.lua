@@ -4,7 +4,7 @@ games { 'gta5' }
 author 'Musiker15 - MSK Scripts'
 name 'msk_aimedic'
 description 'AI Medic NPC (ESX & QBCore)'
-version '1.7.0'
+version '1.7.1'
 
 lua54 'yes'
 
